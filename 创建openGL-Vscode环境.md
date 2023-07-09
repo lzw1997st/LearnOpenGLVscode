@@ -156,4 +156,16 @@
         },
       ```
 
+   3. 在src下增加dir路径，测试make run dir=00_test
+   
+      ```
+      # define source directory
+      SRC		:= src/$(dir) #// 传递 var 变量定义执行文件目录
+      ....
+      
+      run: all
+      	./$(OUTPUTMAIN) src/$(dir)/
+      	@echo Executing 'run: all' complete!
+      ```
+   
       

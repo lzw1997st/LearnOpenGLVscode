@@ -18,7 +18,7 @@ LFLAGS =
 OUTPUT	:= output
 
 # define source directory
-SRC		:= src
+SRC		:= src/$(dir) #// 传递 var 变量定义执行文件目录
 
 # define include directory
 INCLUDE	:= include
@@ -96,5 +96,5 @@ clean:
 	@echo Cleanup complete!
 
 run: all
-	./$(OUTPUTMAIN)
+	./$(OUTPUTMAIN) src/$(dir)/
 	@echo Executing 'run: all' complete!
