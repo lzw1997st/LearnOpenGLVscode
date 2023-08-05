@@ -68,6 +68,16 @@ public:
   {
   }
 
+  glm::vec3 GetPosition()
+  {
+    return this->Position;
+  }
+
+  glm::vec3 GetFront()
+  {
+    return this->Front;
+  }
+
   glm::mat4 GetViewMatrix()
   {
     return glm::lookAt(this->Position, this->Position + this->Front, this->Up);

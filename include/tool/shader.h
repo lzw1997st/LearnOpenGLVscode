@@ -24,6 +24,7 @@ public:
     ~Shader();
     // // 着色器程序ID
     unsigned int ID;
+    static std::string dirName;
     // 使用程序
     void use();
     // uniform工具函数
@@ -31,10 +32,18 @@ public:
     void setInt(const std::string &name, int value) const;
     void setFloat(const std::string &name, float value) const;
     void setMat4(const std::string &name, glm::mat4 &mat) const;
+    void setVec3(const std::string &name, const glm::vec3 &value) const;
+    void setVec3(const std::string &name, float x, float y, float z) const;
 };
 
 Shader::Shader(const char *vertexPath, const char *fragmentPath)
 {
+    std::string vert_string = vertexPath;
+    std::string frag_string = fragmentPath;
+
+    const char *vert_char = vert_string.insert(2, dirName).c_str();
+    const char *frag_char = frag_string.insert(2, dirName).c_str();
+
     // 1. 从文件args路径中读取顶点、片段着色器源码
     std::string vertexCode;
     std::string fragmentCode;
@@ -46,8 +55,8 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
     try
     {
         // 打开文件
-        vShaderFile.open(vertexPath);
-        fShaderFile.open(fragmentPath);
+        vShaderFile.open(vert_char);
+        fShaderFile.open(frag_char);
         std::stringstream vShaderStream, fShaderStream;
         // 将文件中的数据流到stream中
         vShaderStream << vShaderFile.rdbuf();
@@ -122,6 +131,16 @@ void Shader::setInt(const std::string &name, int value) const
 void Shader::setFloat(const std::string &name, float value) const
 {
     glUniform1f(glGetUniformLocation(this->ID, name.c_str()), value);
+}
+
+void Shader::setVec3(const std::string &name, const glm::vec3 &value) const
+{
+    glUniform3fv(glGetUniformLocation(this->ID, name.c_str()), 1, &value[0]);
+}
+
+void Shader::setVec3(const std::string &name, float x, float y, float z) const
+{
+    glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
 }
 
 void Shader::setMat4(const std::string &name, glm::mat4 &mat) const
